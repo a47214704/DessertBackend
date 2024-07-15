@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using JustDessert.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JustDessert.Controllers
@@ -7,28 +7,73 @@ namespace JustDessert.Controllers
 	[ApiController]
 	public class ProductsController : ControllerBase
 	{
-		[HttpGet]
-		public async Task<ActionResult> Get()
+		private readonly AppDbContext _context;
+
+		public ProductsController(AppDbContext appDbContext)
 		{
-			return this.Ok();
+			_context = appDbContext;
+		}
+
+		[HttpGet("id")]
+		public ActionResult<WebApiResult<Product>> Get([FromRoute] long id)
+		{
+			var product = _context.Products.SingleOrDefault(p => p.Id == id);
+			return this.Ok(new WebApiResult<Product>(product));
+		}
+
+		[HttpGet]
+		public ActionResult<WebApiResult<List<Product>>> GetAll()
+		{
+			var products = _context.Products.ToList();
+			return this.Ok(new WebApiResult<List<Product>>(products));
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Post()
+		public ActionResult<WebApiResult<Product>> Post([FromBody] Product product)
 		{
-			return this.Ok();
+			if (product == null || product.Name == string.Empty)
+			{
+				return this.BadRequest(new WebApiResult<Product>("invalid data"));
+			}
+
+			_context.Products.Add(product);
+			_context.SaveChanges();
+			return this.Ok(new WebApiResult<Product>(product));
 		}
 
-		[HttpPut]
-		public async Task<ActionResult> Put()
+		[HttpPut("id")]
+		public ActionResult<WebApiResult<Product>> Put([FromRoute] long id, [FromBody] Product product)
 		{
-			return this.Ok();
+			if (product == null || product.Name == string.Empty)
+			{
+				return this.BadRequest(new WebApiResult<Product>("invalid data"));
+			}
+
+			var existing = _context.Products.SingleOrDefault(p => p.Id == id);
+			if (existing == null)
+			{
+				return this.NotFound(new WebApiResult<Product>("data is not exist"));
+			}
+
+			existing.Name = product.Name;
+			existing.Description = product.Description;
+			existing.Inventory = product.Inventory;
+			_context.Products.Update(existing);
+
+			return this.Ok(new WebApiResult<Product>(existing));
 		}
 
-		[HttpDelete]
-		public async Task<ActionResult> Delete()
+		[HttpDelete("id")]
+		public ActionResult<WebApiResult<Product>> Delete([FromRoute] long id)
 		{
-			return this.Ok();
+			var existing = _context.Products.SingleOrDefault(p => p.Id == id);
+			if (existing == null)
+			{
+				return this.NotFound(new WebApiResult<Product>("data is not exist"));
+			}
+
+			_context.Products.Remove(existing);
+			return this.NoContent();
 		}
 	}
 }

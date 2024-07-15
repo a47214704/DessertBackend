@@ -1,22 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustDessert.Models
 {
 	public class Product
 	{
-		[Column("id")]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key]
 		public long Id { get; set; }
 
-		[Column("name")]
-		public string Name { get; set; }
+		[Required]
+		[MaxLength(50)]
+		public string Name { get; set; } = string.Empty;
 
-		[Column("description")]
-		public string Description { get; set; }
+		[MaxLength(50)]
+		public string? Description { get; set; }
 
-		[Column("status")]
-		public string Status { get; set; }
+		public int Status { get; set; } = (int)ProductStatus.Unknown;
 
-		[Column("inventory")]
 		public long Inventory {  get; set; }
 	}
 }
