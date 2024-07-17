@@ -5,8 +5,8 @@ namespace JustDessert.Models
 {
 	public class Product
 	{
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public long Id { get; set; }
 
 		[Required]
@@ -18,6 +18,6 @@ namespace JustDessert.Models
 
 		public int Status { get; set; } = (int)ProductStatus.Unknown;
 
-		public long Inventory {  get; set; }
+		public long Inventory { get; set; } = 0;
 	}
 }

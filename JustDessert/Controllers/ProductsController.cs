@@ -14,7 +14,7 @@ namespace JustDessert.Controllers
 			_context = appDbContext;
 		}
 
-		[HttpGet("id")]
+		[HttpGet("{id}")]
 		public ActionResult<WebApiResult<Product>> Get([FromRoute] long id)
 		{
 			var product = _context.Products.SingleOrDefault(p => p.Id == id);
@@ -41,7 +41,7 @@ namespace JustDessert.Controllers
 			return this.Ok(new WebApiResult<Product>(product));
 		}
 
-		[HttpPut("id")]
+		[HttpPut("{id}")]
 		public ActionResult<WebApiResult<Product>> Put([FromRoute] long id, [FromBody] Product product)
 		{
 			if (product == null || product.Name == string.Empty)
@@ -58,12 +58,12 @@ namespace JustDessert.Controllers
 			existing.Name = product.Name;
 			existing.Description = product.Description;
 			existing.Inventory = product.Inventory;
-			_context.Products.Update(existing);
+			_context.SaveChanges();
 
 			return this.Ok(new WebApiResult<Product>(existing));
 		}
 
-		[HttpDelete("id")]
+		[HttpDelete("{id}")]
 		public ActionResult<WebApiResult<Product>> Delete([FromRoute] long id)
 		{
 			var existing = _context.Products.SingleOrDefault(p => p.Id == id);
@@ -73,6 +73,7 @@ namespace JustDessert.Controllers
 			}
 
 			_context.Products.Remove(existing);
+			_context.SaveChanges();
 			return this.NoContent();
 		}
 	}

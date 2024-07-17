@@ -26,8 +26,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 		};
 	});
-
 builder.Services.AddAuthorization();
+
+var allowedHosts = builder.Configuration.GetSection("AllowedHosts").Get<string[]>() ?? new string[0];
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(
+		"AllowAny",
+		builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -50,5 +58,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseCors("AllowAny");
 
 app.Run();

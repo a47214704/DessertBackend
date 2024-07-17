@@ -23,20 +23,18 @@ namespace JustDessert.Migrations
 
             modelBuilder.Entity("JustDessert.Models.Product", b =>
                 {
-                    b.Property<long>("Inventory")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Inventory"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Description")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasDefaultValueSql("(newid())");
+                    b.Property<long>("Inventory")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -46,7 +44,7 @@ namespace JustDessert.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("Inventory");
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
                 });
@@ -73,8 +71,8 @@ namespace JustDessert.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
