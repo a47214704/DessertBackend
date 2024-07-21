@@ -50,7 +50,7 @@ namespace JustDessert.Controllers
 			}
 
 			var existing = _context.Users.SingleOrDefault(p => p.Name == user.Name);
-			if (user != null)
+			if (existing != null)
 			{
 				return this.BadRequest(new WebApiResult<User>("user already exist"));
 			}
@@ -103,8 +103,9 @@ namespace JustDessert.Controllers
 				return this.NotFound(new WebApiResult<User>("data is not exist"));
 			}
 
-			existing.Name = user.Name;
-			_context.Users.Update(existing);
+			existing.Email = user.Email;
+			existing.Category = user.Category;
+			_context.SaveChanges();
 
 			return this.Ok(new WebApiResult<User>(existing));
 		}
@@ -121,6 +122,7 @@ namespace JustDessert.Controllers
 			}
 
 			_context.Users.Remove(existing);
+			_context.SaveChanges();
 			return this.NoContent();
 		}
 

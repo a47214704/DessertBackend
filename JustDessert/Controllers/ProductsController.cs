@@ -1,4 +1,5 @@
 ﻿using JustDessert.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JustDessert.Controllers
@@ -15,6 +16,7 @@ namespace JustDessert.Controllers
 		}
 
 		[HttpGet("{id}")]
+		[Authorize]
 		public ActionResult<WebApiResult<Product>> Get([FromRoute] long id)
 		{
 			var product = _context.Products.SingleOrDefault(p => p.Id == id);
@@ -22,6 +24,7 @@ namespace JustDessert.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public ActionResult<WebApiResult<List<Product>>> GetAll()
 		{
 			var products = _context.Products.ToList();
@@ -29,6 +32,7 @@ namespace JustDessert.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public ActionResult<WebApiResult<Product>> Post([FromBody] Product product)
 		{
 			if (product == null || product.Name == string.Empty)
@@ -42,6 +46,7 @@ namespace JustDessert.Controllers
 		}
 
 		[HttpPut("{id}")]
+		[Authorize]
 		public ActionResult<WebApiResult<Product>> Put([FromRoute] long id, [FromBody] Product product)
 		{
 			if (product == null || product.Name == string.Empty)
@@ -64,6 +69,7 @@ namespace JustDessert.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[Authorize]
 		public ActionResult<WebApiResult<Product>> Delete([FromRoute] long id)
 		{
 			var existing = _context.Products.SingleOrDefault(p => p.Id == id);
