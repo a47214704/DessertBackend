@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustDessert.Models
@@ -12,6 +13,10 @@ namespace JustDessert.Models
 		[Required]
 		[MaxLength(50)]
 		public string Name { get; set; } = string.Empty;
+
+		[MaxLength(100)]
+		[DefaultValue("")]
+		public string ImageUrl { get; set; } = string.Empty;
 
 		[MaxLength(50)]
 		public string? Description { get; set; }

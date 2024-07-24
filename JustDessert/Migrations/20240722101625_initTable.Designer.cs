@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustDessert.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240717104526_init")]
-    partial class init
+    [Migration("20240722101625_initTable")]
+    partial class initTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
